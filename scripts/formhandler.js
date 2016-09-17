@@ -36,7 +36,7 @@
 				var emailAddress = event.target.value;
 				var msg = '';
 				if (fn(emailAddress)) {
-					event.target.setCustomValidity('');
+					event.target.setCustomValidity(msg);
 				} else {
 					msg = emailAddress + ' is not an authorized email address!'
 					event.target.setCustomValidity(msg);
