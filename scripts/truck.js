@@ -9,21 +9,28 @@
 
 	Truck.prototype.createOrder = function(order) {
 		console.log('Adding order for ' + order.emailAddress);
-		this.db.add(order.emailAddress, order);
+		return this.db.add(order.emailAddress, order);
 	};
 
 	Truck.prototype.deliverOrder = function(customerID) {
 		console.log('Delivering order for ' + customerID);
-		this.db.remove(customerID);
+		return this.db.remove(customerID);
 	};
 
-	Truck.prototype.printOrders = function () {
-		var customerIDArray = Object.keys(this.db.getAll());
+	Truck.prototype.printOrders = function (printFn) {
+		return this.db.getAll()
+		.then(function (orders) {
+			var customerIDArray = Object.keys(orders);
 
-		console.log('Truck #' + this.truckID + ' has pending orders:');
-		customerIDArray.forEach(function (id) {
-			console.log(this.db.get(id));
-		}.bind(this));
+			console.log('Truck #' + this.truckID + ' has pending orders:');
+			customerIDArray.forEach(function (id) {
+				console.log(orders[id]);
+				if (printFn) {
+					printFn(orders[id]);
+				}
+			}.bind(this));
+		});
+
 	};
 
 	App.Truck = Truck;
